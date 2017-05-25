@@ -1,0 +1,32 @@
+.header {
+    width: 100%;
+    background-color: var(--light-color);
+}
+.header h5 {
+    margin-top: 0;
+}
+.header hr {
+   border: none;
+    color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 3px;
+}
+.header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+.header__about {
+    display: inline-block;
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 2px solid black;
+}
+.header__links {
+    display: inline-block;
+}
+.header__links a {
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: black;
+}

@@ -1,0 +1,44 @@
+.p_card {
+    height: 300px;
+    width: 300px;
+    border: 1px solid lightgrey;
+    margin: 10px 0;
+    align-self: flex-start;
+}
+.p_card__title {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 5px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    min-height: 24px;
+}
+.p_card__title i:hover {
+    cursor: pointer;
+}
+.p_card__title span:hover {
+    cursor: default;
+}
+.p_card__modal {
+    position: absolute;
+    top: 50px;
+    left: 10vw;
+    width: 80vw;
+    z-index: 3;
+    background-color: white;
+    display: none;
+}
+.p_card__modal hr {
+    width: 90%;
+}
+.p_card__title_flat {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 5px;
+}
+.p_card__title_flat i:hover {
+    cursor: pointer;
+}
+.p_card__modal_text {
+    padding: 5px;
+}

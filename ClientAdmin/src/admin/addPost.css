@@ -1,0 +1,42 @@
+.add-post {
+    display: flex;
+}
+.add-post__editor {
+    width: 60%;
+}
+.add-post__editor_buttons {
+    text-align: center;
+}
+.add-post__editor_submit {
+    text-align: center;
+}
+.add-post__preview {
+    display: flex;
+    width: 40%;
+    flex-direction: column;
+    padding-left: 20px;
+}
+.add-post__preview_view {
+    width: 80%;
+}
+.add-post__linkInput {
+    position: absolute;
+    background-color: white;
+    padding: 10px;
+    height: 30%;
+    width: 50%;
+    left: 25%;
+    z-index: 3;
+    display: none;
+}
+.add-post__background-overlay {
+    position: absolute;
+    z-index: 2;
+    background-color: black;
+    opacity: 0.8;
+    min-width: 100vw;
+    min-height: 100vh;
+    top: 0;
+    left: 0;
+    display: none;
+}

@@ -1,0 +1,32 @@
+.greetings__wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.greetings__content {
+    padding-left: 10px;
+}
+.greetings__links {
+    display: flex;
+    justify-content: space-between;
+}
+.icon_wrapper {
+    position: relative;
+    height: 32px;
+    width: 32px;
+    margin: 0 10px;
+}
+
+.icon_wrapper:hover {
+    height: 34px;
+    width: 34px;
+    cursor: pointer;
+    margin: 0 9px;
+}
+
+.icon_wrapper:hover .icon {
+    fill: #666666;
+    cursor: pointer;
+}
+.icon {
+    fill: black;
+}

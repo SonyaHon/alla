@@ -1,0 +1,61 @@
+.add-card {
+    display: flex;
+}
+.c_editor {
+    width: 70%;
+}
+.c_preview {
+    width: 30%;
+}
+.c_editor_title {
+    width: 80%;
+}
+.c_editor_text {
+    width: 80%;
+}
+.p_card__imgInput {
+    position: absolute;
+    background-color: white;
+    padding: 10px;
+    width: 50%;
+    left: 25%;
+    z-index: 3;
+    display: none;
+    max-height: 60vh;
+}
+.add-card i:hover {
+    cursor: pointer;
+}
+.p_card__vidInput {
+    position: absolute;
+    background-color: white;
+    padding: 10px;
+    width: 50%;
+    left: 25%;
+    z-index: 3;
+    display: none;
+    max-height: 60vh;
+}
+.p_card__changeTB {
+    position: absolute;
+    background-color: white;
+    padding: 10px;
+    width: 50%;
+    left: 25%;
+    top: 25%;
+    z-index: 3;
+    display: none;
+    min-height: 60vh;
+    height: 60vh;
+    max-height: 60vh;
+}
+.p_card__changeTB__wrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 50vh;
+}
+.p_card__changeTB__editor {
+    width: 80%;
+    height: 100%;
+}

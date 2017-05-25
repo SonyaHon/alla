@@ -1,0 +1,20 @@
+.portfolio {
+    width: 70%;
+}
+.portfolio__wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.p_hiddenBox {
+    min-height: 100vh;
+    min-width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    z-index: 2;
+    overflow-x: hidden;
+}
