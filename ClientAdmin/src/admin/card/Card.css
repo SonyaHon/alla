@@ -21,19 +21,20 @@
 }
 .p_card__modal {
     position: absolute;
-    top: 50px;
+    top: 3vh;
     left: 10vw;
     width: 80vw;
     z-index: 3;
     background-color: white;
     display: none;
+    margin-bottom: 3vh;
 }
 .p_card__modal hr {
     width: 90%;
 }
 .p_card__title_flat {
-    display: flex;
-    justify-content: space-between;
+    display: block;
+    justify-content: center;
     padding: 3px 5px;
 }
 .p_card__title_flat i:hover {
@@ -41,4 +42,10 @@
 }
 .p_card__modal_text {
     padding: 5px;
+    width: 100%;
+}
+.p_card__modal_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

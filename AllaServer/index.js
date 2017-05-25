@@ -13,7 +13,7 @@ var logined = "true";
 
 var server = http.createServer((req, res) => {
 		if(req.url === '/') {
-			fs.readFile('/Users/sonyahon/workspace/AllaServer/index.html', (err, data) => {
+			fs.readFile('./index.html', (err, data) => {
 				if(err) {
 					return console.log('Error: ', err);
 				}
@@ -21,12 +21,21 @@ var server = http.createServer((req, res) => {
 			})
 		}
 		else if(req.url === '/admin') {
-			fs.readFile('/Users/sonyahon/workspace/AllaServer/admin.html', (err, data) => {
+			fs.readFile('./admin.html', (err, data) => {
 				if(err) {
 					return console.log('Error: ', err);
 				}
 				res.end(data);
 			})
+		}
+		else if (req.url === '/sendImage') {
+            var dat = '';
+            req.on('data', (chunk) => {
+                dat += chunk.toString();
+            });
+            req.on('end', () => {
+            	console.log(dat);
+            });
 		}
 		else if (req.url === '/sendPost') {
 			var dat = '';
@@ -41,13 +50,13 @@ var server = http.createServer((req, res) => {
 					message: dat[11]
 				};
 				
-				fs.readFile('/Users/sonyahon/workspace/AllaServer/data.json', (err, data) => {
+				fs.readFile('./data.json', (err, data) => {
 					if(err) return console.log(err);
 					var newObj = JSON.parse(data);
 					newObj.blog.push(post);
 					console.log(JSON.stringify(newObj));
 					var buffer = new Buffer(JSON.stringify(newObj));
-					fs.writeFile('/Users/sonyahon/workspace/AllaServer/data.json', buffer, () => {
+					fs.writeFile('./data.json', buffer, () => {
 					
 					});
 				});
@@ -74,7 +83,7 @@ var server = http.createServer((req, res) => {
 			}
 		}
 		else {
-			fs.readFile('/Users/sonyahon/workspace/AllaServer' + req.url, (err, data) => {
+			fs.readFile('.' + req.url, (err, data) => {
 				if(err) {
 					return console.log('Error: ', err);
 				}

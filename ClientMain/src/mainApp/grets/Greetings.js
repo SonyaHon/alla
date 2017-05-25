@@ -13,7 +13,7 @@ class Greetings extends Component {
 				<h5>Greetings!</h5>
 				<div className="greetings__wrapper">
 					<div className="greetings__content">
-						I am a product designer, 3d visualizer and artist. <br/>  I create objects, 3d visualization and art  graphics.
+						I am a product designer, 3d visualizer and artist.<br/>I create objects, 3d visualization and art  graphics.
 					</div>
 					<div className="greetings__links">
 						<a href="#" target="_blank">

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
+import Cropper from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 import './addCard.css';
 
@@ -24,22 +24,6 @@ function setCaretPosition(pos) {
 	}
 }
 
-class MyCropp extends Component {
-	render() {
-		return (<Cropper ref="cropper"
-										 aspectRatio={1}
-										 guides={false}
-										 style={{width: "100%", height: "100%"}}
-										 crop={this._crop.bind(this)}
-										 src={this.props.mainImage}/>);
-	}
-	_crop() {
-		var data = this.refs.cropper.getCroppedCanvas();
-		console.log(data);
-		//this.props.callback(data);
-	}
-}
-
 class ImageInputLine extends Component {
 	render() {
 		return(
@@ -48,20 +32,20 @@ class ImageInputLine extends Component {
 					<div className="btn">
 						<span>IMAGE</span>
 						<input type="file" id={"p_card_image_input" + this.props.idx} onChange={() => {
-							this.props.imageAdded();
+							this.props.imageAdded("p_card_image_input" + this.props.idx);
 						}}/>
 					</div>
 					<div className="file-path-wrapper">
 						<input className="file-path validate" type="text"/>
 					</div>
 				</div>
-			<i onClick={() => {this.props.deleteNode(this.props.idx)}} className="material-icons md-18">close</i>
+				<i onClick={() => {this.props.deleteNode(this.props.idx)}} className="material-icons md-18">close</i>
 			</div>
 		);
 	}
 }
 
-class VideoInpuLine extends Component {
+class VideoInputLine extends Component {
 	render() {
 		return(
 			<div style={{display: 'flex'}}>
@@ -98,11 +82,11 @@ class AddCard extends Component {
 			text: "",
 			cardId: 0,
 			imagesAdded: [<ImageInputLine key="0" deleteNode={this.deleteImageInputLine.bind(this)} imageAdded={this.updateImages.bind(this)} idx="0"/>],
-			videosAdded: [<VideoInpuLine key="0" deleteNode={this.deleteVideoInputLine.bind(this)} videoAdded={this.updateVideos.bind(this)} idx="0"/>],
-			addCropper: "Add at least 1 image.",
-			imageToCrop: null
-		}
-		
+			videosAdded: [<VideoInputLine key="0" deleteNode={this.deleteVideoInputLine.bind(this)} videoAdded={this.updateVideos.bind(this)} idx="0"/>],
+		};
+
+		this.crop = {};
+
 	}
 	
 	render() {
@@ -144,10 +128,6 @@ class AddCard extends Component {
 				<div className="add-post__background-overlay">
 				</div>
 				
-				
-				
-				
-				
 				<div className="p_card__imgInput">
 					<span style={{display: "flex", justifyContent: 'space-between'}}><h5>Add image</h5><i onClick={this.closeImageAddMenu.bind(this)} className="material-icons md-18">close</i></span>
 					<div style={{maxHeight: "39vh", overflowY: "auto"}}>
@@ -170,10 +150,18 @@ class AddCard extends Component {
 					<span style={{display: "flex", justifyContent: 'space-between'}}><h5>Change thumbnail</h5><i onClick={this.closeChangeTBMenu.bind(this)} className="material-icons md-18">close</i></span>
 					<div className="p_card__changeTB__wrapper">
 						<div className="p_card__changeTB__buttons">
-							<button className="waves-effect waves-teal btn-flat">SAVE</button>
+							<button className="waves-effect waves-teal btn-flat" onClick={this.savePreviewTBImage.bind(this)}>SAVE</button>
 						</div>
 						<div className="p_card__changeTB__editor">
-							<MyCropp mainImage={this.state.imageToCrop} callback={this.cropCallback.bind(this)}/>
+							<Cropper style={{width: "100%", height: "100%"}}
+									 src={this.state.mainImage}
+									 crop={{x: 25, y: 25, width: 50,  aspect: 1}}
+									 onComplete={(crop, pixelCrop) => {
+									 	this.crop.c = crop;
+										this.crop.p = pixelCrop;
+										console.log(this.crop);
+                           			 }}
+							/>
 						</div>
 					</div>
 				</div>
@@ -198,12 +186,12 @@ class AddCard extends Component {
 	}
 	
 	addImg() {
-		document.querySelector('.p_hiddenBox').style.display = "block";
+		document.querySelector('.add-post__background-overlay').style.display = "block";
 		document.querySelector('.p_card__imgInput').style.display = "block";
 	}
 	
 	addVid() {
-		document.querySelector('.p_hiddenBox').style.display = "block";
+		document.querySelector('.add-post__background-overlay').style.display = "block";
 		document.querySelector('.p_card__vidInput').style.display = "block";
 	}
 	
@@ -211,10 +199,20 @@ class AddCard extends Component {
 		if(this.state.isMounted) {
 			this.setState((prevState) => {
 				var newState = prevState;
-				newState.videosAdded.push(<VideoInpuLine key={newState.videosAdded.length} videoAdded={this.updateVideos.bind(this)} deleteNode={this.deleteVideoInputLine.bind(this)} idx={newState.videosAdded.length}/>);
+				newState.videosAdded.push(<VideoInputLine key={newState.videosAdded.length} videoAdded={this.updateVideos.bind(this)} deleteNode={this.deleteVideoInputLine.bind(this)} idx={newState.videosAdded.length}/>);
 				return newState;
 			});
 		}
+	}
+
+    savePreviewTBImage() {
+		var coef = 300 / Math.max(this.crop.p.width, 300);
+		var imgWidth = (100 * this.crop.p.width) / this.crop.c.width;
+		var imgHeight = (100 * this.crop.p.height) / this.crop.c.height;
+		imgWidth *= coef;
+        imgHeight *= coef;
+		document.querySelector('.p_card').style.backgroundSize = imgWidth + 'px ' + imgHeight + 'px';
+        document.querySelector('.p_card').style.backgroundPosition = -(imgWidth * (this.crop.c.x / 100)) + 'px -' + (imgHeight * (this.crop.c.y / 100)) + 'px';
 	}
 	
 	addImageInputLine() {
@@ -227,32 +225,23 @@ class AddCard extends Component {
 		}
 	}
 	
-	cropCallback(val) {
-		this.setState((prevState) => {
-			var newState = prevState;
-			if(newState.mainImage !== val.toDataURL()){
-				newState.mainImage = val.toDataURL();
-			}
-			return newState;
-		});
-	}
-	
+
 	closeVideoAddMenu() {
-		document.querySelector('.p_hiddenBox').style.display = "none";
+		document.querySelector('.add-post__background-overlay').style.display = "none";
 		document.querySelector('.p_card__vidInput').style.display = "none";
 	}
 	closeImageAddMenu() {
-		document.querySelector('.p_hiddenBox').style.display = "none";
+		document.querySelector('.add-post__background-overlay').style.display = "none";
 		document.querySelector('.p_card__imgInput').style.display = "none";
 	}
 	
 	changeTB() {
-		document.querySelector('.p_hiddenBox').style.display = "block";
+		document.querySelector('.add-post__background-overlay').style.display = "block";
 		document.querySelector('.p_card__changeTB').style.display = "block";
 	}
 	
 	closeChangeTBMenu() {
-		document.querySelector('.p_hiddenBox').style.display = "none";
+		document.querySelector('.add-post__background-overlay').style.display = "none";
 		document.querySelector('.p_card__changeTB').style.display = "none";
 	}
 	
@@ -280,32 +269,38 @@ class AddCard extends Component {
 						break;
 					}
 				}
+                for(var i = 0; i < newState.items.images.length; i++) {
+                    if(newState.items.images[i] !== null) {
+                        newState.mainImage = newState.items.images[i].props.src;
+                        break;
+                    }
+                }
 				newState.imagesAdded.splice(idx, 1, null);
 				return newState;
 			});
 	}
 	//TODO ACTUALL IMAGE AND VIDEO HOSTING AND SHOWING
-	updateImages() {
-		this.setState((prevState) => {
-			var newState = prevState;
-			var imgs = [];
-			for(var i = 0; i < newState.imagesAdded.length; i++) {
-				if(newState.imagesAdded[i] !== null) {
-					var image = <img key={i} src="http://2.bp.blogspot.com/-CmBgofK7QzU/TVj3u3N1h2I/AAAAAAAADN8/OszBhGvvXRU/s640/tumblr_lg7h9gpbtP1qap9qio1_500.jpeg" style={{width: "100%", maxWidth: "48%"}}/>;
-					imgs.push(image);
-				}
-			}
-			newState.items.images = imgs;
-			for(var i = 0; i < newState.items.images.length; i++) {
-				if(newState.items.images[i] !== null) {
-					newState.mainImage = "http://2.bp.blogspot.com/-CmBgofK7QzU/TVj3u3N1h2I/AAAAAAAADN8/OszBhGvvXRU/s640/tumblr_lg7h9gpbtP1qap9qio1_500.jpeg";
-					newState.imageToCrop = "http://2.bp.blogspot.com/-CmBgofK7QzU/TVj3u3N1h2I/AAAAAAAADN8/OszBhGvvXRU/s640/tumblr_lg7h9gpbtP1qap9qio1_500.jpeg";
-					break;
-				}
-			}
-			return newState;
-		});
+	updateImages(id) {
+		var fileReader = new FileReader();
+        var content;
+       	var idx = id[id.length - 1];
+        fileReader.onload = (evt) => {
+            content = evt.target.result;
+            this.setState((prevState) => {
+                var newState = prevState;
+                newState.items.images[idx] = <img key={idx} src={content} style={{width: "100%", maxWidth: "90%", margin: "10px"}}/>;
+                for(var i = 0; i < newState.items.images.length; i++) {
+                    if(newState.items.images[i] !== null) {
+                        newState.mainImage = newState.items.images[i].props.src;
+                        break;
+                    }
+                }
+                return newState;
+            });
+        };
+		fileReader.readAsDataURL(document.getElementById(id).files[0]);
 	}
+
 	updateVideos() {
 		this.setState((prevState) => {
 			var newState = prevState;

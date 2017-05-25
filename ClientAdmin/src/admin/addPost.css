@@ -40,3 +40,14 @@
     left: 0;
     display: none;
 }
+.p_hiddenBox {
+    position: fixed;
+    z-index: 2;
+    background-color: black;
+    opacity: 0.8;
+    min-width: 100vw;
+    min-height: 100vh;
+    top: 0;
+    left: 0;
+    display: none;
+}
